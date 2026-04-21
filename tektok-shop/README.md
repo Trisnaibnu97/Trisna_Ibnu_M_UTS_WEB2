@@ -71,9 +71,7 @@ tektok-shop/
 
 ## Link Demo
 
-> [TekTok Shop - GitHub Pages](https://username.github.io/NamaDepan_NamaBelakang_UTS_Web2/)
-
-*(Ganti URL setelah deploy ke GitHub Pages)*
+> [Bang IB Shop - Live Demo](https://trisnaibnu97.github.io/Trisna_Ibnu_M_UTS_WEB2/)
 
 ## Deploy ke GitHub Pages
 
