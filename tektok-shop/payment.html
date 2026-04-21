@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bang IB Shop - Pembayaran</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-white dark:bg-gray-800 shadow border-b-2 border-green-500">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="shop.html" class="text-xl font-extrabold text-green-600 dark:text-green-400">🛍️ Bang IB Shop</a>
+      <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <span class="text-green-500">🔒</span> Pembayaran Aman
+      </div>
+    </div>
+  </nav>
+
+  <!-- Step indicator -->
+  <div class="max-w-3xl mx-auto px-4 pt-6">
+    <div class="flex items-center justify-center gap-2 mb-8 text-sm">
+      <div class="flex items-center gap-1 text-gray-400"><span class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">✓</span> Keranjang</div>
+      <div class="w-8 h-px bg-gray-300"></div>
+      <div class="flex items-center gap-1 text-gray-400"><span class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">✓</span> Checkout</div>
+      <div class="w-8 h-px bg-gray-300"></div>
+      <div class="flex items-center gap-1 text-green-600 font-semibold"><span class="w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold">3</span> Pembayaran</div>
+      <div class="w-8 h-px bg-gray-300"></div>
+      <div class="flex items-center gap-1 text-gray-400"><span class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold">4</span> Selesai</div>
+    </div>
+  </div>
+
+  <main class="max-w-3xl mx-auto px-4 pb-12">
+    <!-- SCREEN 1: Pilih Metode -->
+    <div id="screen-method">
+      <div class="grid md:grid-cols-3 gap-6">
+
+        <!-- Order summary -->
+        <div class="md:col-span-1">
+          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-5 sticky top-4">
+            <h3 class="font-bold text-gray-800 dark:text-white mb-3 text-sm">Ringkasan Pesanan</h3>
+            <div id="pay-summary" class="space-y-2 text-sm text-gray-600 dark:text-gray-300"></div>
+            <div class="border-t dark:border-gray-700 mt-3 pt-3 space-y-1.5 text-sm">
+              <div class="flex justify-between text-gray-500 dark:text-gray-400">
+                <span>Subtotal</span><span id="pay-subtotal"></span>
+              </div>
+              <div class="flex justify-between text-gray-500 dark:text-gray-400">
+                <span>Ongkir (<span id="pay-ship-label" class="text-xs"></span>)</span>
+                <span id="pay-ship-cost"></span>
+              </div>
+              <div class="flex justify-between font-bold text-gray-800 dark:text-white border-t dark:border-gray-700 pt-2">
+                <span>Total</span>
+                <span id="pay-total" class="text-green-600"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metode pembayaran -->
+        <div class="md:col-span-2">
+          <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
+            <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-5">Pilih Metode Pembayaran</h2>
+
+            <!-- Transfer Bank -->
+            <div class="mb-4">
+              <p class="text-xs font-semibold text-gray-400 uppercase mb-2">Transfer Bank</p>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="selectMethod('bca')" data-method="bca"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">🏦</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">BCA</span>
+                </button>
+                <button onclick="selectMethod('mandiri')" data-method="mandiri"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">🏦</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">Mandiri</span>
+                </button>
+                <button onclick="selectMethod('bni')" data-method="bni"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">🏦</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">BNI</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- E-Wallet -->
+            <div class="mb-4">
+              <p class="text-xs font-semibold text-gray-400 uppercase mb-2">E-Wallet</p>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="selectMethod('gopay')" data-method="gopay"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">💚</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">GoPay</span>
+                </button>
+                <button onclick="selectMethod('ovo')" data-method="ovo"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">💜</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">OVO</span>
+                </button>
+                <button onclick="selectMethod('dana')" data-method="dana"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">🔵</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">DANA</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- QRIS & COD -->
+            <div class="mb-6">
+              <p class="text-xs font-semibold text-gray-400 uppercase mb-2">Lainnya</p>
+              <div class="grid grid-cols-3 gap-2">
+                <button onclick="selectMethod('qris')" data-method="qris"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">📱</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">QRIS</span>
+                </button>
+                <button onclick="selectMethod('cod')" data-method="cod"
+                  class="method-btn border-2 border-gray-200 dark:border-gray-600 rounded-xl p-3 flex flex-col items-center gap-1 hover:border-green-400 transition">
+                  <span class="text-2xl">💵</span>
+                  <span class="text-xs font-semibold text-gray-700 dark:text-gray-300">COD</span>
+                </button>
+              </div>
+            </div>
+
+            <button id="btn-next-method" onclick="goToPayDetail()" disabled
+              class="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition">
+              Lanjutkan Pembayaran
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: Detail Pembayaran -->
+    <div id="screen-detail" class="hidden">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6 max-w-md mx-auto">
+        <button onclick="showScreen('method')" class="text-green-600 hover:underline text-sm mb-4 block">← Ganti metode</button>
+        <div id="pay-detail-content"></div>
+        <button onclick="processPayment()"
+          class="mt-5 w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition">
+          Konfirmasi Pembayaran
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: Processing -->
+    <div id="screen-processing" class="hidden">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-10 max-w-md mx-auto text-center">
+        <div class="text-6xl mb-4 animate-spin inline-block">⏳</div>
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2">Memproses Pembayaran</h2>
+        <p class="text-gray-400 text-sm">Mohon tunggu, jangan tutup halaman ini...</p>
+        <div class="mt-6 bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+          <div id="progress-bar" class="bg-green-500 h-2 rounded-full transition-all duration-300" style="width:0%"></div>
+        </div>
+        <p id="progress-text" class="text-xs text-gray-400 mt-2">Menghubungi server pembayaran...</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: Sukses -->
+    <div id="screen-success" class="hidden">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-10 max-w-md mx-auto text-center">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-4xl">✅</span>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Pembayaran Berhasil!</h2>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Pesanan kamu sedang diproses oleh penjual.</p>
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 text-left text-sm space-y-2 mb-6">
+          <div class="flex justify-between"><span class="text-gray-500">ID Transaksi</span><span id="suc-txid" class="font-mono font-semibold dark:text-white text-xs"></span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Metode</span><span id="suc-method" class="font-semibold dark:text-white"></span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Total Dibayar</span><span id="suc-total" class="font-bold text-green-600"></span></div>
+          <div class="flex justify-between"><span class="text-gray-500">Waktu</span><span id="suc-time" class="dark:text-white text-xs"></span></div>
+        </div>
+        <div class="flex gap-3">
+          <a href="orders.html" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition text-sm text-center">
+            Lihat Pesanan
+          </a>
+          <a href="shop.html" class="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-semibold py-3 rounded-xl transition text-sm text-center">
+            Belanja Lagi
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: Gagal -->
+    <div id="screen-failed" class="hidden">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-10 max-w-md mx-auto text-center">
+        <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <span class="text-4xl">❌</span>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Pembayaran Gagal</h2>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mb-6">Transaksi tidak dapat diproses. Silakan coba lagi.</p>
+        <button onclick="showScreen('method')"
+          class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition">
+          Coba Lagi
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/payment.js"></script>
+  <script>
+    Utils.applyDark();
+    initPayment();
+  </script>
+</body>
+</html>

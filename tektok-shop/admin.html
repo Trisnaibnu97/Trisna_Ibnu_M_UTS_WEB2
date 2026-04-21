@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bang IB Shop - Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
+
+  <!-- Navbar Admin -->
+  <nav class="bg-gray-900 dark:bg-gray-950 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-xl font-extrabold text-green-400">🛍️ Bang IB Shop</span>
+        <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full font-semibold">ADMIN</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="shop.html" target="_blank" class="text-sm text-gray-300 hover:text-white transition hidden sm:block">🏪 Lihat Toko</a>
+        <button onclick="toggleDark()" id="dark-toggle" class="text-xl hover:scale-110 transition">🌙</button>
+        <button onclick="Admin.logout()" class="text-sm bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded-lg transition">Keluar</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 py-6">
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 text-center">
+        <p class="text-2xl font-bold text-green-600" id="stat-revenue">-</p>
+        <p class="text-xs text-gray-400 mt-1">Total Pendapatan</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 text-center">
+        <p class="text-2xl font-bold text-blue-500" id="stat-orders">-</p>
+        <p class="text-xs text-gray-400 mt-1">Total Pesanan</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 text-center">
+        <p class="text-2xl font-bold text-yellow-500" id="stat-pending">-</p>
+        <p class="text-xs text-gray-400 mt-1">Perlu Diproses</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 text-center">
+        <p class="text-2xl font-bold text-emerald-500" id="stat-done">-</p>
+        <p class="text-xs text-gray-400 mt-1">Selesai</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 text-center">
+        <p class="text-2xl font-bold text-purple-500" id="stat-products">-</p>
+        <p class="text-xs text-gray-400 mt-1">Total Produk</p>
+      </div>
+    </div>
+
+    <!-- Tab Buttons -->
+    <div class="flex flex-wrap gap-2 mb-5">
+      <button id="btn-orders" onclick="switchTab('orders')"
+        class="px-5 py-2 rounded-xl font-semibold text-sm transition bg-green-600 text-white">
+        📦 Manajemen Pesanan
+      </button>
+      <button id="btn-products" onclick="switchTab('products')"
+        class="px-5 py-2 rounded-xl font-semibold text-sm transition bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-green-50">
+        🗂️ Manajemen Produk
+      </button>
+      <div class="ml-auto flex gap-2">
+        <button onclick="printReport('summary')"
+          class="px-4 py-2 rounded-xl font-semibold text-sm transition bg-purple-600 hover:bg-purple-700 text-white flex items-center gap-1">
+          🖨️ Laporan Ringkasan
+        </button>
+        <button onclick="printReport('orders')"
+          class="px-4 py-2 rounded-xl font-semibold text-sm transition bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1">
+          🖨️ Cetak Pesanan
+        </button>
+        <button onclick="printReport('products')"
+          class="px-4 py-2 rounded-xl font-semibold text-sm transition bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-1">
+          🖨️ Cetak Produk
+        </button>
+      </div>
+    </div>
+
+    <!-- ── TAB ORDERS ── -->
+    <div id="tab-orders">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow">
+        <div class="flex flex-wrap items-center justify-between gap-3 p-4 border-b dark:border-gray-700">
+          <h2 class="font-bold text-gray-800 dark:text-white text-lg">Daftar Pesanan</h2>
+          <select id="order-filter"
+            class="text-sm px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400">
+            <option value="">Semua Status</option>
+            <option value="Diproses">Diproses</option>
+            <option value="Dikirim">Dikirim</option>
+            <option value="Selesai">Selesai</option>
+            <option value="Dibatalkan">Dibatalkan</option>
+          </select>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-xs uppercase">
+              <tr>
+                <th class="px-4 py-3 text-left">ID Pesanan</th>
+                <th class="px-4 py-3 text-left">Pelanggan</th>
+                <th class="px-4 py-3 text-left">Item</th>
+                <th class="px-4 py-3 text-left">Total</th>
+                <th class="px-4 py-3 text-left">Tanggal</th>
+                <th class="px-4 py-3 text-left">Status</th>
+                <th class="px-4 py-3 text-left">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB PRODUCTS ── -->
+    <div id="tab-products" class="hidden">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow">
+        <div class="flex flex-wrap items-center justify-between gap-3 p-4 border-b dark:border-gray-700">
+          <h2 class="font-bold text-gray-800 dark:text-white text-lg">Daftar Produk</h2>
+          <div class="flex gap-2">
+            <input id="product-search" type="text" placeholder="Cari produk..."
+              class="text-sm px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400">
+            <button onclick="openAddProduct()"
+              class="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-xl transition font-medium">
+              + Tambah Produk
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-xs uppercase">
+              <tr>
+                <th class="px-4 py-3 text-left">ID</th>
+                <th class="px-4 py-3 text-left">Foto</th>
+                <th class="px-4 py-3 text-left">Nama & Kategori</th>
+                <th class="px-4 py-3 text-left">Harga</th>
+                <th class="px-4 py-3 text-center">Stok</th>
+                <th class="px-4 py-3 text-center">Rating</th>
+                <th class="px-4 py-3 text-left">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="products-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Order Detail ── -->
+  <div id="order-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center p-5 border-b dark:border-gray-700">
+        <h3 class="font-bold text-gray-800 dark:text-white text-lg">Detail Pesanan</h3>
+        <button onclick="document.getElementById('order-modal').classList.add('hidden')"
+          class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+      </div>
+      <div id="modal-content" class="p-5"></div>
+    </div>
+  </div>
+
+  <!-- ── MODAL: Add/Edit Product ── -->
+  <div id="product-modal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center p-5 border-b dark:border-gray-700">
+        <h3 id="product-form-title" class="font-bold text-gray-800 dark:text-white text-lg">Tambah Produk</h3>
+        <button onclick="document.getElementById('product-modal').classList.add('hidden')"
+          class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+      </div>
+      <div class="p-5">
+        <input type="hidden" id="product-edit-id">
+        <form id="product-form" class="space-y-4" onsubmit="event.preventDefault(); saveProduct()">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Produk *</label>
+              <input id="p-name" type="text" required placeholder="Nama produk"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Harga (Rp) *</label>
+              <input id="p-price" type="number" required min="0" placeholder="150000"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kategori *</label>
+              <input id="p-category" type="text" required placeholder="Elektronik"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Stok</label>
+              <input id="p-stock" type="number" min="0" placeholder="10"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rating (1-5)</label>
+              <input id="p-rating" type="number" min="1" max="5" step="0.1" placeholder="4.5"
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+            </div>
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">URL Gambar</label>
+              <input id="p-image" type="url" placeholder="https://..."
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+            </div>
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi</label>
+              <textarea id="p-desc" rows="3" placeholder="Deskripsi produk..."
+                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm resize-none"></textarea>
+            </div>
+          </div>
+          <div class="flex gap-3 pt-2">
+            <button type="submit"
+              class="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 rounded-xl transition text-sm">
+              Simpan Produk
+            </button>
+            <button type="button" onclick="document.getElementById('product-modal').classList.add('hidden')"
+              class="flex-1 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-semibold py-2.5 rounded-xl transition text-sm">
+              Batal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    initAdmin();
+  </script>
+</body>
+</html>

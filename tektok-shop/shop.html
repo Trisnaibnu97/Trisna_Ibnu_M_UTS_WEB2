@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bang IB Shop - Belanja</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-white dark:bg-gray-800 shadow sticky top-0 z-40 border-b-2 border-green-500">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <a href="shop.html" class="text-xl font-extrabold text-green-600 dark:text-green-400 whitespace-nowrap">🛍️ Bang IB Shop</a>
+
+      <div class="flex-1 max-w-md">
+        <input id="search" type="text" placeholder="Cari produk di Bang IB Shop..."
+          class="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm transition">
+      </div>
+
+      <div class="flex items-center gap-3">
+        <span id="nav-user" class="text-sm text-gray-600 dark:text-gray-300 hidden sm:block"></span>
+        <a href="orders.html" class="text-sm text-gray-600 dark:text-gray-300 hover:text-green-600 transition hidden sm:block">📦 Pesanan</a>
+        <a href="wishlist.html" class="text-sm text-gray-600 dark:text-gray-300 hover:text-green-600 transition hidden sm:block">❤️ Wishlist</a>
+        <a href="cart.html" class="relative">
+          <span class="text-2xl">🛒</span>
+          <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+        </a>
+        <button onclick="toggleDark()" id="dark-toggle" class="text-xl hover:scale-110 transition">🌙</button>
+        <button onclick="Auth.logout()" class="text-sm text-red-400 hover:text-red-600 transition">Keluar</button>
+        <a href="admin-login.html" class="text-xs bg-gray-800 text-green-400 px-2 py-1 rounded-lg hover:bg-gray-700 transition hidden sm:block">⚙️ Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero banner ala Tokopedia -->
+  <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white py-6 px-4">
+    <div class="max-w-7xl mx-auto">
+      <p class="text-lg font-semibold">Selamat datang di Bang IB Shop 👋</p>
+      <p class="text-green-100 text-sm mt-1">Temukan produk terbaik dengan harga terjangkau</p>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex flex-wrap gap-3 mb-6 items-center">
+      <select id="filter-cat"
+        class="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        <option value="">Semua Kategori</option>
+        <option value="Fashion Pria">Fashion Pria</option>
+        <option value="Fashion Wanita">Fashion Wanita</option>
+        <option value="Elektronik">Elektronik</option>
+        <option value="Furnitur & Dekorasi">Furnitur & Dekorasi</option>
+        <option value="Kecantikan">Kecantikan</option>
+        <option value="Olahraga">Olahraga</option>
+        <option value="Dapur & Masak">Dapur & Masak</option>
+        <option value="Buku">Buku</option>
+        <option value="Tas & Koper">Tas & Koper</option>
+        <option value="Hobi & Koleksi">Hobi & Koleksi</option>
+        <option value="Kesehatan">Kesehatan</option>
+        <option value="Hewan Peliharaan">Hewan Peliharaan</option>
+        <option value="Aksesoris">Aksesoris</option>
+      </select>
+      <select id="filter-sort"
+        class="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-green-400">
+        <option value="">Urutkan</option>
+        <option value="low">Harga Terendah</option>
+        <option value="high">Harga Tertinggi</option>
+        <option value="rating">Rating Terbaik</option>
+      </select>
+      <span id="result-count" class="text-sm text-gray-400 ml-auto"></span>
+    </div>
+
+    <div id="product-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5"></div>
+    <div id="pagination" class="flex justify-center gap-2 mt-8 flex-wrap"></div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/products.js"></script>
+  <script>
+    initShop();
+    document.getElementById('dark-toggle').textContent = Utils.isDark() ? '☀️' : '🌙';
+  </script>
+</body>
+</html>
