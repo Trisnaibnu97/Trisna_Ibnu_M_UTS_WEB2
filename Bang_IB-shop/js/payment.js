@@ -239,6 +239,24 @@ function showSuccess() {
   };
   orders.unshift(order);
   localStorage.setItem('tektok_orders', JSON.stringify(orders));
+  window.currentPaidOrder = order;
+
+  // 🔔 Kirim order ke Backend API (Railway / Localhost) untuk dicatat & dikirim notifikasi WA ke Owner
+  fetch(`${Utils.API_BASE_URL}/checkout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(order)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log('✅ Checkout Backend Response:', data);
+    if (data.waNotification && data.waNotification.sent) {
+      Utils.showToast('Notifikasi WA berhasil dikirim ke Owner! 📲', 'success');
+    }
+  })
+  .catch(err => {
+    console.warn('⚡ API Backend offline/gagal, pesanan tersimpan lokal:', err);
+  });
 
   // Bersihkan pending order & cart
   localStorage.removeItem('tektok_pending_order');
@@ -251,6 +269,27 @@ function showSuccess() {
   document.getElementById('suc-time').textContent = now;
 
   showScreen('success');
+}
+
+// Fitur Kirim WhatsApp Langsung Tanpa Fonnte (Direct wa.me)
+function sendDirectWA() {
+  if (!window.currentPaidOrder) return;
+  const o = window.currentPaidOrder;
+  const adminPhone = '6281234567890'; // Nomor WA Admin toko kamu (ganti nomor kamu di sini)
+  const itemsText = (o.items || []).map((i, idx) => `${idx+1}. ${i.name} (x${i.qty}) - Rp ${Number(i.price*i.qty).toLocaleString('id-ID')}`).join('\n');
+  const msg = `*HALO ADMIN, SAYA SUDAH PEMBAYARAN PESANAN!* 🛍️\n\n` +
+    `*ID Pesanan:* ${o.id || o.transactionId}\n` +
+    `*Nama:* ${o.name}\n` +
+    `*No. HP:* ${o.phone}\n` +
+    `*Alamat:* ${o.address} (${o.destCity || ''})\n` +
+    `*Metode Pembayaran:* ${o.payment}\n` +
+    `*ID Transaksi:* ${o.transactionId}\n\n` +
+    `*🛒 Rincian Barang:*\n${itemsText}\n\n` +
+    `*TOTAL DIBAYAR:* *Rp ${Number(o.total).toLocaleString('id-ID')}*\n\n` +
+    `Tolong segera dicek dan diproses ya min, terima kasih! 🙏`;
+
+  const url = `https://wa.me/${adminPhone}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
 }
 
 function showFailed() {

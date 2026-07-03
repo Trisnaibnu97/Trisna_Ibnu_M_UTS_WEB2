@@ -1,4 +1,4 @@
-# 🛍️ TekTok Shop
+# 🛍️ Bang IB Shop
 
 Aplikasi online shop sederhana berbasis Fullstack JavaScript + Tailwind CSS, dibuat sebagai proyek UTS mata kuliah Web Programming 2.
 
@@ -33,7 +33,7 @@ TekTok Shop adalah platform belanja online yang memungkinkan pengguna untuk meli
 
 ### Lokal
 1. Clone repository ini
-2. Buka folder `tektok-shop/`
+2. Buka folder `Bang_IB-shop/`
 3. Jalankan dengan live server (VS Code Live Server / Python HTTP Server)
    ```bash
    # Python
@@ -48,7 +48,7 @@ Daftar akun baru melalui halaman Register, lalu login.
 ## Struktur Folder
 
 ```
-tektok-shop/
+Bang_IB-shop/
 ├── index.html        # Halaman Login
 ├── register.html     # Halaman Register
 ├── shop.html         # Halaman Toko / Product List
@@ -59,23 +59,19 @@ tektok-shop/
 ├── wishlist.html     # Halaman Wishlist
 ├── data/
 │   └── products.json # Data dummy produk
-├── js/
-│   ├── utils.js      # Fungsi utilitas & helper
-│   ├── auth.js       # Logic autentikasi
-│   ├── products.js   # Logic produk & detail
-│   ├── cart.js       # Logic keranjang
-│   ├── checkout.js   # Logic checkout
-│   └── orders.js     # Logic riwayat pesanan
-└── README.md
+└── js/               # Logic Frontend
 ```
+
+## 🚀 Backend API Node.js + MySQL + Notifikasi WhatsApp (Fonnte)
+
+Proyek ini telah dilengkapi dengan **Backend API** lengkap untuk memenuhi spesifikasi tugas lanjutan UTS:
+- **Folder Backend (`/backend`)**: API Express.js untuk CRUD produk, kategori, checkout, dan manajemen pesanan.
+- **Notifikasi WhatsApp**: Saat pembeli melakukan checkout, sistem akan otomatis meneruskan pesan notifikasi orderan ke WhatsApp Owner menggunakan **Fonnte API Gateway**.
+- **File SQL Dump**: `tektok_shop_db.sql` (berisi skema tabel & 70 produk lengkap).
+- **Postman Collection**: `Online_Store_UTS_API.postman_collection.json` (siap di-import untuk pengujian dosen/aslab).
+
+👉 **[Baca Panduan Lengkap Backend & Deployment Railway di Sini (PANDUAN_BACKEND_DAN_DEPLOYMENT.md)](./PANDUAN_BACKEND_DAN_DEPLOYMENT.md)**
 
 ## Link Demo
 
 > [Bang IB Shop - Live Demo](https://trisnaibnu97.github.io/Trisna_Ibnu_M_UTS_WEB2/)
-
-## Deploy ke GitHub Pages
-
-1. Push semua file ke repository GitHub (public)
-2. Masuk ke Settings → Pages
-3. Source: pilih branch `main`, folder `/root` atau `/tektok-shop`
-4. Simpan, tunggu beberapa menit, URL akan muncul

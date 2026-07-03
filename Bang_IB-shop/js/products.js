@@ -5,7 +5,21 @@ let currentPage = 1;
 const PER_PAGE = 8;
 
 async function loadProducts() {
-  // Pakai produk custom dari admin kalau ada, fallback ke JSON
+  try {
+    // 1. Coba ambil data dari Backend API (Railway / Localhost)
+    const res = await fetch(`${Utils.API_BASE_URL}/products`);
+    if (res.ok) {
+      const result = await res.json();
+      if (result.success && result.data) {
+        allProducts = result.data;
+        return;
+      }
+    }
+  } catch (err) {
+    console.warn('⚡ API Backend tidak terjangkau, menggunakan data statis/lokal...');
+  }
+
+  // 2. Fallback ke produk custom di localStorage atau file JSON lokal
   const custom = localStorage.getItem('tektok_products_custom');
   if (custom) {
     allProducts = JSON.parse(custom);

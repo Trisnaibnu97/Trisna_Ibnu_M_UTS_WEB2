@@ -1,6 +1,9 @@
 // Utility functions
 
 const Utils = {
+  // Base URL Backend Railway (Ganti dengan URL Railway kamu setelah deploy, contoh: 'https://backend-uts.up.railway.app/api')
+  API_BASE_URL: 'http://localhost:5000/api',
+
   formatRupiah(amount) {
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
   },

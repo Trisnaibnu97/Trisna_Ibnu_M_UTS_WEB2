@@ -1,0 +1,220 @@
+{
+  "info": {
+    "_postman_id": "c8f1a2b3-4d5e-6f7a-8b9c-0d1e2f3a4b5c",
+    "name": "Online Store UTS API (Tektok Shop)",
+    "description": "Koleksi API lengkap untuk tugas UTS Web 2 Online Store (Backend Node.js + Express + MySQL + WhatsApp Fonnte Notification).\n\nDibuat oleh: Trisna Ibnu M",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check & Welcome",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        },
+        "description": "Cek status backend API apakah aktif"
+      }
+    },
+    {
+      "name": "1. Products API",
+      "item": [
+        {
+          "name": "Get Daftar Kategori Unik",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Get Semua Produk",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Filter Produk by Kategori",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products?category=Elektronik",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "category", "value": "Elektronik" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cari Produk (Search)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products?search=Kemeja",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products"],
+              "query": [
+                { "key": "search", "value": "Kemeja" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Detail Produk by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Produk Baru (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Produk Tes UTS Baru\",\n  \"price\": 150000,\n  \"category\": \"Fashion Pria\",\n  \"image\": \"https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400\",\n  \"description\": \"Produk percobaan untuk pengujian API UTS.\",\n  \"stock\": 25,\n  \"rating\": 4.9\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/products",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products"]
+            }
+          }
+        },
+        {
+          "name": "Update Produk (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Produk Tes UTS Update\",\n  \"price\": 165000,\n  \"stock\": 30\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/products/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Produk (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/products/71",
+              "host": ["{{base_url}}"],
+              "path": ["api", "products", "71"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Checkout & WA Notification API",
+      "item": [
+        {
+          "name": "Process Checkout (Forward WA Owner)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"ORD-TEST-001\",\n  \"userId\": \"trisna@example.com\",\n  \"userName\": \"Trisna Ibnu\",\n  \"name\": \"Trisna Ibnu M\",\n  \"phone\": \"081234567890\",\n  \"address\": \"Jl. Sudirman No. 123\",\n  \"destCity\": \"Bandung\",\n  \"items\": [\n    { \"id\": 1, \"name\": \"Kemeja Flannel Pria Kotak-Kotak\", \"price\": 135000, \"qty\": 2 },\n    { \"id\": 4, \"name\": \"Kaos Oversize Distro\", \"price\": 95000, \"qty\": 1 }\n  ],\n  \"subtotal\": 365000,\n  \"shippingCost\": 20000,\n  \"shippingLabel\": \"JNE Reguler (2-3 hari)\",\n  \"total\": 385000,\n  \"paymentMethod\": \"Transfer BCA\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "checkout"]
+            },
+            "description": "Endpoint ini akan menyimpan pesanan ke database MySQL dan mengirimkan pesan notifikasi WhatsApp secara otomatis ke nomor Owner/Admin yang diatur di variabel ADMIN_WA pada .env"
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Orders API",
+      "item": [
+        {
+          "name": "Get Semua Pesanan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Pesanan by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/orders/ORD-TEST-001",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "ORD-TEST-001"]
+            }
+          }
+        },
+        {
+          "name": "Update Status Pesanan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Diproses\",\n  \"paymentMethod\": \"Transfer BCA\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/orders/ORD-TEST-001/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "ORD-TEST-001", "status"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
