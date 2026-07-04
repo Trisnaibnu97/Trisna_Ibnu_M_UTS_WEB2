@@ -103,5 +103,58 @@ const Utils = {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  },
+
+  initMobileResponsive() {
+    const nav = document.querySelector('nav');
+    if (!nav || document.getElementById('mobile-bottom-nav')) return;
+
+    document.body.classList.add('pb-20', 'sm:pb-0');
+
+    const bottomNav = document.createElement('div');
+    bottomNav.id = 'mobile-bottom-nav';
+    bottomNav.className = 'sm:hidden fixed bottom-0 inset-x-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 py-2 px-3 flex justify-around items-center z-50 shadow-2xl text-[11px] font-semibold text-gray-600 dark:text-gray-300';
+    
+    const curPath = window.location.pathname;
+    const isPage = (name) => curPath.includes(name);
+
+    bottomNav.innerHTML = `
+      <a href="shop.html" class="flex flex-col items-center gap-0.5 transition ${isPage('shop.html') ? 'text-green-600 dark:text-green-400 font-bold' : 'hover:text-green-600'}">
+        <span class="text-lg">🏪</span>
+        <span>Toko</span>
+      </a>
+      <a href="wishlist.html" class="flex flex-col items-center gap-0.5 transition ${isPage('wishlist.html') ? 'text-green-600 dark:text-green-400 font-bold' : 'hover:text-green-600'}">
+        <span class="text-lg">❤️</span>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="flex flex-col items-center gap-0.5 transition relative ${isPage('cart.html') ? 'text-green-600 dark:text-green-400 font-bold' : 'hover:text-green-600'}">
+        <span class="text-lg">🛒</span>
+        <span>Keranjang</span>
+      </a>
+      <a href="orders.html" class="flex flex-col items-center gap-0.5 transition ${isPage('orders.html') ? 'text-green-600 dark:text-green-400 font-bold' : 'hover:text-green-600'}">
+        <span class="text-lg">📦</span>
+        <span>Pesanan</span>
+      </a>
+      <a href="admin-login.html" class="flex flex-col items-center gap-0.5 transition hover:text-green-600">
+        <span class="text-lg">⚙️</span>
+        <span>Admin</span>
+      </a>
+    `;
+
+    document.body.appendChild(bottomNav);
+
+    document.querySelectorAll('table').forEach(tbl => {
+      const parent = tbl.parentElement;
+      if (parent && !parent.classList.contains('overflow-x-auto')) {
+        parent.style.overflowX = 'auto';
+        parent.style.display = 'block';
+        parent.style.maxWidth = '100%';
+      }
+    });
   }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+  Utils.applyDark();
+  Utils.initMobileResponsive();
+});

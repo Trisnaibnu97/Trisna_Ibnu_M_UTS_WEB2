@@ -397,6 +397,20 @@ function toggleDark() {
   if (btn) btn.textContent = isDark ? '☀️' : '🌙';
 }
 
+function toggleMobileSidebar() {
+  const drawer = document.getElementById('sidebar-drawer');
+  const backdrop = document.getElementById('mobile-sidebar-backdrop');
+  if (!drawer || !backdrop) return;
+  const isClosed = drawer.classList.contains('-translate-x-full');
+  if (isClosed) {
+    drawer.classList.remove('-translate-x-full');
+    backdrop.classList.remove('hidden');
+  } else {
+    drawer.classList.add('-translate-x-full');
+    backdrop.classList.add('hidden');
+  }
+}
+
 function switchTab(tab) {
   ['tab-orders','tab-products','tab-categories','tab-settings'].forEach(t => {
     const el = document.getElementById(t);
@@ -409,6 +423,14 @@ function switchTab(tab) {
     el.className = `w-full text-left px-4 py-3 rounded-xl font-semibold text-sm transition flex items-center gap-3 ${active ? 'bg-green-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`;
   });
   if (tab === 'categories') renderCategories();
+  if (window.innerWidth < 768) {
+    const drawer = document.getElementById('sidebar-drawer');
+    const backdrop = document.getElementById('mobile-sidebar-backdrop');
+    if (drawer && !drawer.classList.contains('-translate-x-full')) {
+      drawer.classList.add('-translate-x-full');
+      if (backdrop) backdrop.classList.add('hidden');
+    }
+  }
 }
 
 // ── CETAK LAPORAN ─────────────────────────────────────────────
