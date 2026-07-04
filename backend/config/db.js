@@ -59,8 +59,9 @@ async function initDatabase() {
     // 3. Cek apakah tabel products kosong
     const [rows] = await pool.query('SELECT COUNT(*) as cnt FROM products');
     if (rows[0].cnt === 0) {
-      console.log('📦 Tabel products kosong, otomatis memasukkan 70 produk dari file JSON...');
-      const jsonPath = path.join(__dirname, '../../Bang_IB-shop/data/products.json');
+      const jsonPathLocal = path.join(__dirname, '../data/products.json');
+      const jsonPathParent = path.join(__dirname, '../../Bang_IB-shop/data/products.json');
+      const jsonPath = fs.existsSync(jsonPathLocal) ? jsonPathLocal : jsonPathParent;
       if (fs.existsSync(jsonPath)) {
         const products = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
         for (const p of products) {
