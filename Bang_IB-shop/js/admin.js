@@ -406,7 +406,7 @@ function switchTab(tab) {
     const el = document.getElementById(b);
     if (!el) return;
     const active = b === `btn-${tab}`;
-    el.className = `px-5 py-2 rounded-xl font-semibold text-sm transition ${active ? 'bg-green-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-green-50'}`;
+    el.className = `w-full text-left px-4 py-3 rounded-xl font-semibold text-sm transition flex items-center gap-3 ${active ? 'bg-green-600 text-white shadow-md' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`;
   });
   if (tab === 'categories') renderCategories();
 }
