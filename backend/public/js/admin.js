@@ -209,6 +209,7 @@ function openAddProduct() {
   document.getElementById('product-form-title').textContent = 'Tambah Produk';
   document.getElementById('product-form').reset();
   document.getElementById('product-edit-id').value = '';
+  updateImagePreview('');
   document.getElementById('product-modal').classList.remove('hidden');
 }
 
@@ -224,7 +225,38 @@ function openEditProduct(id) {
   document.getElementById('p-rating').value = p.rating;
   document.getElementById('p-image').value = p.image;
   document.getElementById('p-desc').value = p.description;
+  updateImagePreview(p.image);
   document.getElementById('product-modal').classList.remove('hidden');
+}
+
+function updateImagePreview(url) {
+  const previewBox = document.getElementById('p-image-preview-box');
+  const previewImg = document.getElementById('p-image-preview');
+  if (previewBox && previewImg && url) {
+    previewImg.src = url;
+    previewBox.classList.remove('hidden');
+  } else if (previewBox) {
+    previewBox.classList.add('hidden');
+  }
+}
+
+function handleProductImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  if (file.size > 2 * 1024 * 1024) {
+    Utils.showToast('Ukuran foto maksimal 2MB!', 'error');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const base64Data = e.target.result;
+    document.getElementById('p-image').value = base64Data;
+    updateImagePreview(base64Data);
+    Utils.showToast('✅ Foto produk berhasil diproses!', 'success');
+  };
+  reader.readAsDataURL(file);
 }
 
 function saveProduct() {

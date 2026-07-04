@@ -316,9 +316,21 @@
                 class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
             </div>
             <div class="col-span-2">
-              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">URL Gambar</label>
-              <input id="p-image" type="url" placeholder="https://..."
-                class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Foto / Gambar Produk</label>
+              <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                <div class="flex-1 w-full">
+                  <input id="p-image" type="text" placeholder="Tempel URL atau Upload foto ->" oninput="updateImagePreview(this.value)"
+                    class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 text-sm">
+                </div>
+                <label class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-1.5 transition flex-shrink-0 shadow-sm">
+                  <span>📁 Upload Foto</span>
+                  <input id="p-image-file" type="file" accept="image/*" class="hidden" onchange="handleProductImageUpload(event)">
+                </label>
+              </div>
+              <div id="p-image-preview-box" class="mt-2 hidden">
+                <p class="text-[11px] text-gray-400 mb-1">Preview Foto:</p>
+                <img id="p-image-preview" src="" alt="Preview" class="h-24 w-24 object-cover rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+              </div>
             </div>
             <div class="col-span-2">
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Deskripsi</label>
