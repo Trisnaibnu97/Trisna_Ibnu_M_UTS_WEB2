@@ -6,10 +6,16 @@ const apiRoutes = require('./routes/apiRoutes');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const path = require('path');
+
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// Sajikan file statis frontend online store & admin dashboard
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../Bang_IB-shop')));
 
 // Welcome Route / Health Check
 app.get('/', (req, res) => {

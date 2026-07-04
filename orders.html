@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bang IB Shop - Riwayat Pesanan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+  <nav class="bg-white dark:bg-gray-800 shadow sticky top-0 z-40 border-b-2 border-green-500">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <a href="shop.html" class="text-xl font-extrabold text-green-600 dark:text-green-400">🛍️ Bang IB Shop</a>
+      <div class="flex items-center gap-3">
+        <span id="nav-user" class="text-sm text-gray-600 dark:text-gray-300 hidden sm:block"></span>
+        <a href="shop.html" class="text-sm text-gray-600 dark:text-gray-300 hover:text-green-600 transition hidden sm:block">🏪 Toko</a>
+        <a href="cart.html" class="relative">
+          <span class="text-2xl">🛒</span>
+          <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+        </a>
+        <button onclick="toggleDark()" id="dark-toggle" class="text-xl hover:scale-110 transition">🌙</button>
+        <button onclick="Auth.logout()" class="text-sm text-red-400 hover:text-red-600 transition">Keluar</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">📦 Riwayat Pesanan</h1>
+    <div id="orders-list" class="space-y-5"></div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/orders.js"></script>
+  <script>
+    initOrders();
+    document.getElementById('dark-toggle').textContent = Utils.isDark() ? '☀️' : '🌙';
+  </script>
+</body>
+</html>

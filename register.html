@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bang IB Shop - Login</title>
+  <title>Bang IB Shop - Daftar</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>tailwind.config = { darkMode: 'class' }</script>
 </head>
@@ -12,13 +12,18 @@
   <div class="w-full max-w-md">
     <div class="text-center mb-8">
       <h1 class="text-4xl font-extrabold text-green-600 dark:text-green-400">🛍️ Bang IB Shop</h1>
-      <p class="text-gray-500 dark:text-gray-400 mt-1">Belanja seru, harga bersahabat</p>
+      <p class="text-gray-500 dark:text-gray-400 mt-1">Buat akun baru, mulai belanja!</p>
     </div>
 
     <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8">
-      <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Masuk ke Akun</h2>
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Buat Akun</h2>
 
-      <form id="login-form" class="space-y-4">
+      <form id="register-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nama Lengkap</label>
+          <input id="name" type="text" required placeholder="Nama kamu"
+            class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition">
+        </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
           <input id="email" type="email" required placeholder="email@contoh.com"
@@ -29,22 +34,28 @@
           <div class="relative">
             <input id="password" type="password" required placeholder="Minimal 6 karakter"
               class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition">
-            <button type="button" onclick="togglePass()" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600">👁️</button>
+            <button type="button" onclick="toggleRegPass()" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">👁️</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Konfirmasi Password</label>
+          <div class="relative">
+            <input id="confirm" type="password" required placeholder="Ulangi password"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-400 transition">
+            <button type="button" onclick="toggleConfirmPass()" class="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">👁️</button>
           </div>
         </div>
         <button type="submit"
           class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-xl transition text-base">
-          Masuk
+          Daftar Sekarang
         </button>
       </form>
 
       <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-5">
-        Belum punya akun?
-        <a href="register.html" class="text-green-600 hover:underline font-medium">Daftar sekarang</a>
+        Sudah punya akun?
+        <a href="index.html" class="text-green-600 hover:underline font-medium">Masuk di sini</a>
       </p>
     </div>
-
-    <p class="text-center text-xs text-gray-400 mt-4">Demo: daftar akun baru untuk mulai belanja</p>
   </div>
 
   <button onclick="toggleDark()" id="dark-toggle"
@@ -55,10 +66,14 @@
   <script src="js/utils.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    initLogin();
+    initRegister();
     document.getElementById('dark-toggle').textContent = Utils.isDark() ? '☀️' : '🌙';
-    function togglePass() {
+    function toggleRegPass() {
       const p = document.getElementById('password');
+      p.type = p.type === 'password' ? 'text' : 'password';
+    }
+    function toggleConfirmPass() {
+      const p = document.getElementById('confirm');
       p.type = p.type === 'password' ? 'text' : 'password';
     }
   </script>

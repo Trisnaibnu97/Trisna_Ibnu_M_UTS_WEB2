@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bang IB Shop - Detail Produk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+  <nav class="bg-white dark:bg-gray-800 shadow sticky top-0 z-40 border-b-2 border-green-500">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <a href="shop.html" class="text-xl font-extrabold text-green-600 dark:text-green-400">🛍️ Bang IB Shop</a>
+      <div class="flex items-center gap-3">
+        <span id="nav-user" class="text-sm text-gray-600 dark:text-gray-300 hidden sm:block"></span>
+        <a href="cart.html" class="relative">
+          <span class="text-2xl">🛒</span>
+          <span id="cart-badge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+        </a>
+        <button onclick="toggleDark()" id="dark-toggle" class="text-xl hover:scale-110 transition">🌙</button>
+        <button onclick="Auth.logout()" class="text-sm text-red-400 hover:text-red-600 transition">Keluar</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <a href="shop.html" class="text-green-600 hover:underline text-sm mb-6 inline-block">← Kembali ke Toko</a>
+    <div id="product-detail">
+      <div class="text-center py-20 text-gray-400">Memuat produk...</div>
+    </div>
+  </main>
+
+  <script src="js/utils.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/products.js"></script>
+  <script>
+    initProductDetail();
+    document.getElementById('dark-toggle').textContent = Utils.isDark() ? '☀️' : '🌙';
+  </script>
+</body>
+</html>
