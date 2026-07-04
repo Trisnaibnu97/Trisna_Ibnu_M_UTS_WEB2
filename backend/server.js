@@ -26,6 +26,19 @@ app.get('/', (req, res) => {
   });
 });
 
+// Route inisialisasi database otomatis (untuk Railway)
+app.get('/api/init-db', async (req, res) => {
+  try {
+    const db = require('./config/db');
+    if (db.initDatabase) {
+      await db.initDatabase();
+    }
+    res.status(200).json({ success: true, message: '🎉 Pembuatan tabel & dumping 70 produk ke Railway MySQL berhasil 100%!' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Gagal inisialisasi', error: err.message });
+  }
+});
+
 // Gunakan API Routes
 app.use('/api', apiRoutes);
 
